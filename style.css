@@ -22,8 +22,19 @@ body{
     border-radius: 3px;
     padding: 32px;
     cursor: pointer;
-    margin-bottom: 16px;
+    margin-bottom: 300px;
 }
 #submit:hover{
     background-color: #3a8;
+}
+#results {
+    font-size: 32px;
+    color: forestgreen;
+}
+footer {
+    position:fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(18, 134, 0, 0.205);
+    padding: 20px;"
 }
