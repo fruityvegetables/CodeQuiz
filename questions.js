@@ -1,3 +1,5 @@
+// my variable which has all of my questions I made!
+
 var myQuestions = [
     {
         question: "What does HTML stand for?",
@@ -88,7 +90,7 @@ var myQuestions = [
         },
         correctAnswer: 'd'
     },
-    {
+    {// queue the crazy string escapes/literals
         question: "In the following lines of code, assume that \"demo\" refers to a p or div tag element.\<br>\<br>var x = 10;\r\nvar y = \"10\";\<br>document.getElementById(\"demo\").innerHTML = Boolean(x == y);\<br>\<br>Which of these will display in the demo element when the function is ran?(When the page is loaded)",
         answers: {
             a: '10',
@@ -99,7 +101,7 @@ var myQuestions = [
         },
         correctAnswer: 'b'
     },
-    {
+    {// queue the crazy string escapes/literals
         question: "In the following lines of code, assume that \"demo\" refers to a p or div tag element.\<br>\<br>var x = 10;\r\nvar y = \"10\";\<br>document.getElementById(\"demo\").innerHTML = Boolean(x === y);\<br>\<br>Which of these will display in the demo element when the function is ran?(When the page is loaded)",
         answers: {
             a: 'false',

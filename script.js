@@ -1,38 +1,85 @@
-var timerText = 180;
+
+// start timer at two minutes
+var timerText = 120;
+
+// create function to determine time at any given moment
 var timerId = setInterval(function(){
   document.getElementById('timerText').innerHTML=timerText;
   timerText--;
   if (timerText <= -1){
     clearInterval(timerId);
     document.getElementById('timerText').innerHTML='Done';
-    // or...
-    alert("You're out of time!");
-  }
+    
+    alert("✨✨You're out of time!✨✨");
+  } 
 }, 1000);
 
-var quizContainer = document.getElementById('quiz');
-var resultsContainer = document.getElementById('results');
+// create global variables hooking into HTML 
+var quizBox = document.getElementById('quiz');
+var resultsBox = document.getElementById('results');
 var submitButton = document.getElementById('submit');
 
-generateQuiz(myQuestions, quizContainer, resultsContainer, submitButton);
+// first step: alert the user to the start of their quiz
+alert("✨✨Hi! Once you close this alert box, your timed quiz will begin!\n You will have two minutes to answer ten questions over web development!✨✨");
 
-function generateQuiz(questions, quizContainer, resultsContainer, submitButton){
+// function to give the results back to the user
+function giveResults(questions, quizBox, resultsBox){
+        
+    // collects all answers from the quiz
+    var answerContainers = quizBox.querySelectorAll('.answers');
+    
+    // keeps track of all answers user has given
+    var userAnswer = '';
+    var numCorrect = 0;
+    
+    // for loop to display each question and run logic vv
+    for(var i = 0; i < questions.length; i++){
 
-    function showQuestions(questions, quizContainer){
-        // we'll need a place to store the output and the answer choices
+        // finds the answer within the question...
+        userAnswer = (answerContainers[i].querySelector('input[name=question'+i+']:checked')||{}).value;
+        
+        // if answer is correct
+        if (userAnswer === questions[i].correctAnswer){
+            // add to the number of correct answers
+            numCorrect++;
+            
+            // color the answers green
+            answerContainers[i].style.color = 'lightgreen';
+        }
+        // if answer is wrong or blank
+        else {
+            // color the answers red
+            answerContainers[i].style.color = 'red';
+            // subtract 5 seconds for each wrong answer
+            timerText-=5;
+            
+        }
+    }
+
+    // displays results out of a total that is derived from the length of the questions array
+    resultsBox.innerHTML = numCorrect + ' out of ' + questions.length;
+}
+// generates a quiz
+makeQuiz(myQuestions, quizBox, resultsBox, submitButton);
+
+// function to generate a quiz
+function makeQuiz(questions, quizBox, resultsBox, submitButton){
+    // function to start displaying questions in the quizBox
+    function displayQuestions(questions, quizBox){
+        // variables to store output and user answers
         var output = [];
         var answers;
 
-        // for each question...
-        for(var i=0; i<questions.length; i++){
+        // for each question displayed:
+        for(var i = 0; i < questions.length; i++){
             
-            // first reset the list of answers
+            // reset answers variable to null
             answers = [];
 
-            // for each available answer...
+            // for all possible answers in the array,
             for(letter in questions[i].answers){
 
-                // ...add an html radio button
+                // display an html radio button the user can select
                 answers.push(
                     '<label>'
                         + '<input type="radio" name="question'+i+'" value="'+letter+'">'
@@ -42,58 +89,27 @@ function generateQuiz(questions, quizContainer, resultsContainer, submitButton){
                 );
             }
 
-            // add this question and its answers to the output
+            // give the question and answer to output
             output.push(
                 '<div class="question">' + questions[i].question + '</div>'
                 + '<div class="answers">' + answers.join('') + '</div>'
             );
         }
 
-        // finally combine our output list into one string of html and put it on the page
-        quizContainer.innerHTML = output.join('');
+        // combine the outputs into html and display 
+        quizBox.innerHTML = output.join('');
     }
 
 
-    function showResults(questions, quizContainer, resultsContainer){
-        
-        // gather answer containers from our quiz
-        var answerContainers = quizContainer.querySelectorAll('.answers');
-        
-        // keep track of user's answers
-        var userAnswer = '';
-        var numCorrect = 0;
-        
-        // for each question...
-        for(var i=0; i<questions.length; i++){
+    
 
-            // find selected answer
-            userAnswer = (answerContainers[i].querySelector('input[name=question'+i+']:checked')||{}).value;
-            
-            // if answer is correct
-            if(userAnswer===questions[i].correctAnswer){
-                // add to the number of correct answers
-                numCorrect++;
-                
-                // color the answers green
-                answerContainers[i].style.color = 'lightgreen';
-            }
-            // if answer is wrong or blank
-            else{
-                // color the answers red
-                answerContainers[i].style.color = 'red';
-            }
-        }
-
-        // show number of correct answers out of total
-        resultsContainer.innerHTML = numCorrect + ' out of ' + questions.length;
-    }
-
-    // show questions right away
-    showQuestions(questions, quizContainer);
+    // this will first display our questions
+    displayQuestions(questions, quizBox);
     
     // on submit, show results
     submitButton.onclick = function(){
-        showResults(questions, quizContainer, resultsContainer);
+        giveResults(questions, quizBox, resultsBox);
+        
     }
 
 }
